@@ -1,4 +1,8 @@
-class Api::UsersController < Api::BaseController
+class Api::UsersController < ApplicationController
+  before_action :authenticate_user!, except: [:register]
+  before_action :set_user, only: [:update]
+  before_action :authorize_user, only: [:update]
+
   def register
     begin
       validate_registration_params(params)
@@ -23,7 +27,49 @@ class Api::UsersController < Api::BaseController
     end
   end
 
+  def update
+    update_service = UserService::Update.new
+    result = update_service.execute(id: params[:id], username: user_params[:username], email: user_params[:email])
+
+    if result[:error].present?
+      render json: { error: result[:error] }, status: error_status(result[:error])
+    else
+      render json: {
+        status: 200,
+        message: "Profile updated successfully.",
+        user: {
+          id: @user.id,
+          username: @user.username,
+          email: @user.email,
+          updated_at: @user.updated_at.iso8601
+        }
+      }, status: :ok
+    end
+  end
+
   private
+
+  def set_user
+    @user = User.find_by(id: params[:id])
+    render json: { error: "User not found." }, status: :not_found if @user.nil?
+  end
+
+  def authorize_user
+    authorize @user, policy_class: ApplicationPolicy
+  end
+
+  def user_params
+    params.permit(:username, :email)
+  end
+
+  def error_status(error)
+    case error
+    when "User not found." then :not_found
+    when "Username is required.", "Invalid email format." then :bad_request
+    when "The username or email is already in use by another user." then :conflict
+    else :internal_server_error
+    end
+  end
 
   def validate_registration_params(params)
     raise ArgumentError, "Username is required." if params[:username].blank?

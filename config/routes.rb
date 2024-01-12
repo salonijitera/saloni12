@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     post 'users/register', to: 'users#register'
     put '/shops/:id', to: 'shops#update', as: 'update_shop'
     post '/users/verify-email', to: 'users#verify_email'
+    put '/users/:id/profile', to: 'users#update' # Added from new code
   end
 
   # ... other routes ...
