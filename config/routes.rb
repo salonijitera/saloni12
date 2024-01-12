@@ -5,14 +5,15 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   get '/health' => 'pages#health_check'
   get 'api-docs/v1/swagger.yaml' => 'swagger#yaml'
-  
-  # New route from the new code
-  namespace :api do
-    put '/shops/:id', to: 'shops#update', as: 'update_shop'
-  end
 
-  # Existing route from the existing code
-  post '/api/users/verify-email', to: 'api/users#verify_email'
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  
+  # API namespace
+  namespace :api, defaults: { format: :json } do
+    post 'users/register', to: 'users#register'
+    put '/shops/:id', to: 'shops#update', as: 'update_shop'
+    post '/users/verify-email', to: 'users#verify_email'
+  end
 
   # ... other routes ...
 end
