@@ -1,5 +1,6 @@
+
 # PostgreSQL. Versions 9.3 and up are supported. Ensure there is enough disk space before proceeding with the following steps and monitor disk space to prevent "PG::DiskFull" errors.
-# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Consider setting up monitoring and alerts for disk space usage to prevent "PG::DiskFull" errors.
+# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Consider setting up monitoring and alerts for disk space usage to prevent "PG::DiskFull" errors. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed.
 # Note: The following configuration does not address the disk space issue directly. It is the responsibility of the system administrator to ensure adequate disk space is available.
 # Install the pg driver:
 #   gem install pg
@@ -25,7 +26,7 @@ default: &default
   # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate.
   # https://guides.rubyonrails.org/configuring.html#database-pooling
 
-development: &development
+development:
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_development" } %>
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD") { "postgres" } %>
@@ -54,8 +55,7 @@ development: &development
   # Defaults to warning.
   #min_messages: notice
 
-# Warning: The database defined as "test" will be erased and re-generated from your development database when you run "rake".
-test: &test
+test:
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_test" } %>
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD") { "postgres" } %>
@@ -69,8 +69,7 @@ test: &test
 # production deployment.
 #
 # On Heroku and other platform providers, you may have a full connection URL
-# available as an environment variable. For example:
-#   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
+# available as an environment variable. For example, DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
 #
 # You can use this database configuration with:
 # Ensure the database configuration is correct and the environment variables are properly set.
@@ -84,7 +83,7 @@ production: &production
   # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
 
 staging: &staging
-  <<: *default
+  <<: *production
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
   username: <%= ENV.fetch("BASE_SOURCE_USERNAME") { "base_source" } %>
   password: <%= ENV["BASE_SOURCE_PASSWORD"] %>
