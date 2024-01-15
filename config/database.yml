@@ -1,6 +1,7 @@
 # PostgreSQL. Versions 9.3 and up are supported.
 #
-# Install the pg driver and check disk space:
+# Install the pg driver:
+#   Ensure there is enough disk space before proceeding with the following steps.
 #   gem install pg
 # On macOS with Homebrew:
 #   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
@@ -17,12 +18,12 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
   host: <%= ENV.fetch("BASE_SOURCE_DATABASE_HOST") { "localhost" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: postgres
   port: 5432
+  # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions.
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
 
 development:
   <<: *default
@@ -32,7 +33,7 @@ development:
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
-  # the same name as the operating system user that initialized the database. Ensure sufficient disk space is available.
+  # the same name as the operating system user that initialized the database. Verify the role has the correct permissions.
 
   # The password associated with the postgres role (username).
   #password:
@@ -63,8 +64,7 @@ test:
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD") { "postgres" } %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
-# like your database password, in your source code. If your source code is
-# ever seen by anyone, they now have access to your database.
+# like your database password, in your source code. If your source code is ever seen by anyone, they now have access to your database.
 #
 # Instead, provide the password as a unix environment variable when you boot
 # the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
@@ -78,7 +78,7 @@ test:
 #
 # You can use this database configuration with:
 #
-#   production:
+#   production: (Ensure the database configuration is correct and the environment variables are properly set)
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
