@@ -1,6 +1,7 @@
 
 # PostgreSQL. Versions 9.3 and up are supported.
 # Ensure there is enough disk space before proceeding with the following steps.
+# It is crucial to monitor disk space and manage database storage to prevent errors such as "PG::DiskFull".
 # Install the pg driver:
 #   gem install pg
 # On macOS with Homebrew:
@@ -44,6 +45,7 @@ development:
   #host: localhost
 
   # The TCP port the server listens on. Defaults to 5432.
+  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
   # If your server runs on a different port number, change accordingly.
 
   # Schema search path. The server defaults to $user,public
