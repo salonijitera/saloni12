@@ -1,3 +1,4 @@
+
 # PostgreSQL. Versions 9.3 and up are supported. Ensure there is enough disk space before proceeding with the following steps and monitor disk space to prevent "PG::DiskFull" errors.
 # It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate and consider setting up monitoring and alerts for disk space usage.
 # Note: The following configuration does not address the disk space issue directly. It is the responsibility of the system administrator to ensure adequate disk space is available.
