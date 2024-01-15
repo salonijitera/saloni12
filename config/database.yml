@@ -1,6 +1,6 @@
 
 # PostgreSQL. Versions 9.3 and up are supported. Ensure there is enough disk space before proceeding with the following steps and monitor disk space to prevent "PG::DiskFull" errors.
-# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Consider setting up monitoring and alerts for disk space usage to prevent "PG::DiskFull" errors. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed.
+# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Consider setting up monitoring and alerts for disk space usage to prevent "PG::DiskFull" errors. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. Ensure that the database.yml file does not contain hard-coded paths that could lead to incorrect file storage locations.
 # Note: The following configuration does not address the disk space issue directly. It is the responsibility of the system administrator to ensure adequate disk space is available.
 # Install the pg driver:
 #   gem install pg
