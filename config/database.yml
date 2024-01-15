@@ -1,6 +1,6 @@
 # PostgreSQL. Versions 9.3 and up are supported.
 #
-# Install the pg driver:
+# Install the pg driver and check disk space:
 #   gem install pg
 # On macOS with Homebrew:
 #   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
@@ -92,3 +92,6 @@ staging:
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
   username: <%= ENV.fetch("BASE_SOURCE_USERNAME") { "base_source" } %>
   password: <%= ENV["BASE_SOURCE_PASSWORD"] %>
+
+# Ensure there is enough disk space for PostgreSQL to operate
+# Consider setting up monitoring and alerts for disk space usage
