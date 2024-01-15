@@ -1,7 +1,6 @@
 
 # PostgreSQL. Versions 9.3 and up are supported.
 # Ensure there is enough disk space before proceeding with the following steps and monitor disk space to prevent "PG::DiskFull" errors.
-# Consider setting up monitoring and alerts for disk space usage.
 # It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate and consider setting up monitoring and alerts for disk space usage.
 # Install the pg driver:
 #   gem install pg
@@ -22,34 +21,32 @@ default: &default
   encoding: unicode
   host: <%= ENV.fetch("BASE_SOURCE_DATABASE_HOST") { "localhost" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: postgres
+  username: <%= ENV.fetch("BASE_SOURCE_USERNAME") { "postgres" } %>
   port: 5432
   # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions.
   # https://guides.rubyonrails.org/configuring.html#database-pooling
 
-development: # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider monitoring disk space usage.
+development:
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_development" } %>
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD") { "postgres" } %>
 
-  # The specified database role being used to connect to postgres.
+  # The specified database role being used to connect to postgres. Verify the role has the correct permissions.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
-  # the same name as the operating system user that initialized the database. Verify the role has the correct permissions.
+  # the same name as the operating system user that initialized the database.
 
   # The password associated with the postgres role (username).
   #password:
 
-  # Connect on a TCP socket. Omitted by default since the client uses a
-  # domain socket that doesn't need configuration. Windows does not have
+  # Connect on a domain socket that doesn't need configuration. Windows does not have
   # domain sockets, so uncomment these lines.
   #host: localhost
 
   # The TCP port the server listens on. Defaults to 5432.
-  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider monitoring disk space usage.
   # If your server runs on a different port number, change accordingly.
 
-  # Schema search path. The server defaults to $user,public
+  # Schema search path. The server defaults to $user,public. Verify the role has the correct permissions.
   #schema_search_path: myapp,sharedapp,public
 
   # Minimum log levels, in increasing order:
@@ -58,9 +55,7 @@ development: # Ensure the PostgreSQL data directory has sufficient space to prev
   # Defaults to warning.
   #min_messages: notice
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
+# Warning: The database defined as "test" will be erased and re-generated from your development database when you run "rake".
 test:
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_test" } %>
@@ -68,7 +63,7 @@ test:
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. Instead, provide the password as an environment variable and ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
-#
+# Ensure the database configuration is correct and the environment variables are properly set.
 # Instead, provide the password as a unix environment variable when you boot
 # the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full rundown on how to provide these environment variables in a
@@ -76,19 +71,18 @@ test:
 #
 # On Heroku and other platform providers, you may have a full connection URL
 # available as an environment variable. For example:
-# Ensure the database configuration is correct and the environment variables are properly set.
 #   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
 #
 # You can use this database configuration with:
-#
-#   production: # Ensure the database configuration is correct and the environment variables are properly set.
+# Ensure the database configuration is correct and the environment variables are properly set.
+#   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production: # Ensure the database configuration is correct, the environment variables are properly set, and the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
+production:
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
   username: <%= ENV.fetch("BASE_SOURCE_USERNAME") { "base_source" } %>
-  password: <%= ENV["BASE_SOURCE_PASSWORD"] %>
+  password: <%= ENV.fetch("BASE_SOURCE_PASSWORD") { "base_source_password" } %>
 
 staging:
   <<: *default # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider monitoring disk space usage.
@@ -96,5 +90,4 @@ staging:
   username: <%= ENV.fetch("BASE_SOURCE_USERNAME") { "base_source" } %>
   password: <%= ENV["BASE_SOURCE_PASSWORD"] %>
 
-# Ensure there is enough disk space for PostgreSQL to operate
-# Consider setting up monitoring and alerts for disk space usage
+# Ensure there is enough disk space for PostgreSQL to operate and consider setting up monitoring and alerts for disk space usage.
