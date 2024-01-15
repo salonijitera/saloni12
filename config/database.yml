@@ -1,7 +1,7 @@
 
 # PostgreSQL. Versions 9.3 and up are supported.
-# Ensure there is enough disk space before proceeding with the following steps.
-# It is crucial to monitor disk space and manage database storage to prevent errors such as "PG::DiskFull".
+# Ensure there is enough disk space before proceeding with the following steps and monitor disk space to prevent "PG::DiskFull" errors.
+# Consider setting up monitoring and alerts for disk space usage.
 # Install the pg driver:
 #   gem install pg
 # On macOS with Homebrew:
@@ -45,7 +45,7 @@ development:
   #host: localhost
 
   # The TCP port the server listens on. Defaults to 5432.
-  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
+  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider monitoring disk space usage.
   # If your server runs on a different port number, change accordingly.
 
   # Schema search path. The server defaults to $user,public
@@ -66,7 +66,7 @@ test:
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD") { "postgres" } %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
-# like your database password, in your source code. If your source code is ever seen by anyone, they now have access to your database.
+# like your database password, in your source code. Instead, provide the password as an environment variable.
 #
 # Instead, provide the password as a unix environment variable when you boot
 # the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
@@ -75,15 +75,15 @@ test:
 #
 # On Heroku and other platform providers, you may have a full connection URL
 # available as an environment variable. For example:
-#
+# Ensure the database configuration is correct and the environment variables are properly set.
 #   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
 #
 # You can use this database configuration with:
 #
-#   production: (Ensure the database configuration is correct and the environment variables are properly set)
+#   production: # Ensure the database configuration is correct and the environment variables are properly set.
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production:
+production: # Ensure the database configuration is correct and the environment variables are properly set.
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
   username: <%= ENV.fetch("BASE_SOURCE_USERNAME") { "base_source" } %>
