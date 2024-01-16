@@ -1,11 +1,12 @@
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.3'
 
 # Gems for all environments
-        gem 'multi_json'
-        gem 'rswag', '~> 2.5.1'
+gem 'multi_json'
+gem 'rswag', '~> 2.5.1'
 gem 'active_storage_validations'
 gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '>= 1.4.2', require: false
@@ -52,7 +53,8 @@ group :development, :test do
   gem 'faker'
   gem 'pry-byebug'
   gem 'pry-rails'
-  gem 'pry-stack_explorer'
+  # Temporarily comment out pry-stack_explorer until debug_inspector gem issue is resolved
+  # gem 'pry-stack_explorer'
 end
 # since we need to run swaggerize command once in server (preview)
 # https://github.com/rswag/rswag/issues/81#issuecomment-317534154

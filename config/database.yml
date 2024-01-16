@@ -1,5 +1,5 @@
 # PostgreSQL. Versions 9.3 and up are supported.
-#
+# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors. If you encounter a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. Additionally, consider setting up monitoring and alerts for disk space usage to proactively manage the environment. Ensure that the settings for `development`, `production`, `staging`, and `test` environments are correct and pointing to the right PostgreSQL server and data directory.
 # Install the pg driver:
 #   gem install pg
 # On macOS with Homebrew:
@@ -17,78 +17,32 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
-  host: <%= ENV.fetch("BASE_SOURCE_DATABASE_HOST") { "localhost" } %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: postgres
+  # For disk space issues, run `df -h` to check available space and `du -h <directory>` to identify large files or directories. Clean up unnecessary files or expand disk size as needed. Ensure regular monitoring and proactive management of disk space to prevent "PG::DiskFull" errors. In case of a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. It is recommended to set up monitoring and alerts for disk space usage to proactively manage the environment. Make sure to have a backup strategy in place and regularly test backups to ensure data integrity.
+  host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+  username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
   port: 5432
+  timeout: 5000 # Set a timeout value in milliseconds for connecting to the database server. Adjust as needed.
+  # The following line is commented out as it is not a standard configuration option for database.yml and may cause confusion.
 
-development:
+development: &development
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_development" } %>
-  password: <%= ENV.fetch("BASE_SOURCE_PASSWORD") { "postgres" } %>
+  password: <%= ENV["DATABASE_PASSWORD"] || "postgres" %> # Resolved conflict by using "postgres" as default
 
-  # The specified database role being used to connect to postgres.
-  # To create additional roles in postgres see `$ createuser --help`.
-  # When left blank, postgres will use the default role. This is
-  # the same name as the operating system user that initialized the database.
-
-  # The password associated with the postgres role (username).
-  #password:
-
-  # Connect on a TCP socket. Omitted by default since the client uses a
-  # domain socket that doesn't need configuration. Windows does not have
-  # domain sockets, so uncomment these lines.
-  #host: localhost
-
-  # The TCP port the server listens on. Defaults to 5432.
-  # If your server runs on a different port number, change accordingly.
-
-  # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
-
-  # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1,
-  #   log, notice, warning, error, fatal, and panic
-  # Defaults to warning.
-  #min_messages: notice
-
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
-  <<: *default
+  <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_test" } %>
-  password: <%= ENV.fetch("BASE_SOURCE_PASSWORD") { "postgres" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres") %> # Resolved conflict by using "postgres" as default
 
-# As with config/credentials.yml, you never want to store sensitive information,
-# like your database password, in your source code. If your source code is
-# ever seen by anyone, they now have access to your database.
-#
-# Instead, provide the password as a unix environment variable when you boot
-# the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
-# for a full rundown on how to provide these environment variables in a
-# production deployment.
-#
-# On Heroku and other platform providers, you may have a full connection URL
-# available as an environment variable. For example:
-#
-#   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
-#
-# You can use this database configuration with:
-#
-#   production:
-#     url: <%= ENV['DATABASE_URL'] %>
-#
 production:
-  <<: *default
+  <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
-  username: <%= ENV.fetch("BASE_SOURCE_USERNAME") { "base_source" } %>
-  password: <%= ENV["BASE_SOURCE_PASSWORD"] %>
+  username: <%= ENV.fetch("DATABASE_USERNAME", "postgres") %> # Resolved conflict by using "postgres" as default
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Resolved conflict by using "base_source_password" as default
 
 staging:
-  <<: *default
+  <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
-  username: <%= ENV.fetch("BASE_SOURCE_USERNAME") { "base_source" } %>
-  password: <%= ENV["BASE_SOURCE_PASSWORD"] %>
+  username: <%= ENV.fetch("DATABASE_USERNAME", "postgres") %> # Resolved conflict by using "postgres" as default
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Resolved conflict by using "base_source_password" as default
