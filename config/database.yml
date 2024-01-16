@@ -24,7 +24,7 @@ default: &default
   username: <%= ENV["BASE_SOURCE_USERNAME"] || "postgres" %>
   port: 5432
   # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate.
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
 
 development:
   <<: *default
@@ -35,7 +35,7 @@ development:
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database. Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
-
+  # the same name as the operating system user that initialized the database. Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors. Regularly monitor disk space and clean up or archive old data to prevent disk space issues.
   # The password associated with the postgres role (username).
   #password:
 
@@ -83,7 +83,7 @@ production: &production
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "base_source_password") %>
   # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider setting up monitoring and alerts for disk space usage.
 
-staging: &staging
+  # Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process.
   <<: *production
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
   username: <%= ENV["BASE_SOURCE_USERNAME"] || "base_source" %>
