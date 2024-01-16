@@ -23,8 +23,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV["DATABASE_USERNAME"] || "base_source" %>
   port: 5432
-  # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
-  # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
+  # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors. Consider implementing automated monitoring and alerting for disk space usage.
 
 development: &development
   <<: *default
@@ -39,7 +38,7 @@ development: &development
   #password:
 
   # Connect on a domain socket that doesn't need configuration. Windows does not have domain sockets, so uncomment these lines if you are not on Windows.
-  #host: localhost
+  #host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
 
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
@@ -62,7 +61,7 @@ test:
 # Instead, provide the password as an environment variable.
 # Ensure the database configuration is correct and the environment variables are properly set.
 # Instead, provide the password as a unix environment variable when you boot
-# the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database for a full rundown on how to provide these environment variables in a production deployment.
+# the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database for a full rundown on how to provide these environment variables in a production deployment. Ensure regular disk space checks and have a contingency plan for disk space exhaustion.
 # production deployment.
 #
 # On Heroku and other platform providers, you may have a full connection URL
@@ -78,7 +77,7 @@ production:
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
   username: <%= ENV["DATABASE_USERNAME"] || "base_source" %>
   password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %>
-  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider setting up monitoring and alerts for disk space usage. Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process.
+  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider setting up monitoring and alerts for disk space usage. Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process. Implement proactive measures to manage disk space effectively.
 
   # Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process.
 
@@ -87,5 +86,4 @@ staging:
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
   username: <%= ENV["DATABASE_USERNAME"] || "base_source" %>
   password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %>
-
-# Ensure there is enough disk space for PostgreSQL to operate and consider setting up monitoring and alerts for disk space usage.
+# Ensure there is enough disk space for PostgreSQL to operate and consider setting up monitoring and alerts for disk space usage. Implement regular disk space checks and have a plan for managing disk space to avoid "PG::DiskFull" errors.
