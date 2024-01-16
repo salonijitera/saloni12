@@ -17,6 +17,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  # Ensure the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed.
   host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
