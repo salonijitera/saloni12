@@ -22,59 +22,26 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5).to_i %>
   username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
   port: 5432
-  # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors. Consider implementing automated monitoring and alerting for disk space usage. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors. If you encounter a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases.
   timeout: 5000 # Set a timeout value in milliseconds for connecting to the database server. Adjust as needed.
 
 development: &development
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_development" } %>
-  password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres") %> # Resolved conflict by using "postgres" as default
-
-  # The specified database role being used to connect to postgres. Verify the role has the correct permissions and ensure that the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
-  # To create additional roles in postgres see `$ createuser --help`.
-  # When left blank, postgres will use the default role. This is
-  # the same name as the operating system user that initialized the database.
-  # The password associated with the postgres role (username).
-  #password:
-
-  # Connect on a domain socket that doesn't need configuration. Windows does not have domain sockets, so uncomment these lines if you are not on Windows.
-  #host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
-
-  # The TCP port the server listens on. Defaults to 5432.
-  # If your server runs on a different port number, change accordingly.
-
-  # Schema search path. The server defaults to $user,public. Verify the role has the correct permissions and sufficient disk space is available. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
-  #schema_search_path: myapp,sharedapp,public
-
-  # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1, log,
-  #   log, notice, warning, error, fatal, and panic
-  # Defaults to warning.
-  # min_messages: notice
+  password: <%= ENV["DATABASE_PASSWORD"] || "postgres" %> # Resolved conflict by using "postgres" as default
 
 test:
   <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_test" } %>
-  password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres") %> # Kept "postgres" to resolve conflict
-
-# As with config/credentials.yml, you never want to store sensitive information like your database password in your source code.
-# Instead, provide the password as an environment variable.
-# Ensure the database configuration is correct and the environment variables are properly set.
-# Instead, provide the password as a unix environment variable when you boot
-# the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database for a full rundown on how to provide these environment variables in a production deployment. Ensure regular disk space checks and have a contingency plan for disk space exhaustion. It's important to ensure that there is enough disk space available to prevent "PG::DiskFull" errors.
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres") %> # Resolved conflict by using "postgres" as default
 
 production:
   <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
   username: <%= ENV.fetch("DATABASE_USERNAME", "postgres") %> # Resolved conflict by using "postgres" as default
-  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Kept "base_source_password" to resolve conflict
-  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider setting up monitoring and alerts for disk space usage. Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process. Implement proactive measures to manage disk space effectively.
-
-  # Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors.
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Resolved conflict by using "base_source_password" as default
 
 staging:
   <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
   username: <%= ENV.fetch("DATABASE_USERNAME", "postgres") %> # Resolved conflict by using "postgres" as default
-  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Kept "base_source_password" to resolve conflict
-# Ensure there is enough disk space for PostgreSQL to operate and consider setting up monitoring and alerts for disk space usage. Implement regular disk space checks and have a plan for managing disk space to avoid "PG::DiskFull" errors.
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Resolved conflict by using "base_source_password" as default
