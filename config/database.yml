@@ -1,4 +1,4 @@
-# PostgreSQL. Versions 9.3 and up are supported. Ensure adequate disk space to prevent "PG::DiskFull" errors.
+# PostgreSQL. Versions 9.3 and up are supported.
 # It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. Ensure that the database.yml file does not contain hard-coded paths that could lead to incorrect file storage locations. In case of a "PG::DiskFull" error, free up space or increase disk size before attempting to create databases or perform other database operations. Ensure that the database configuration is correct and the environment variables are properly set. Check the PostgreSQL server logs for more detailed information about the disk space issue. Consider implementing alerts for low disk space if not already in place.
 # Note: The following configuration does not address the disk space issue directly. It is the responsibility of the system administrator to ensure adequate disk space is available and to monitor disk usage regularly to prevent future issues.
 # Ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. In case of a "PG::DiskFull" error, free up space or increase disk size before attempting to create databases or perform other database operations.
@@ -26,7 +26,7 @@ default: &default
   # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate.
   # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
 
-development: &development
+development:
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_development" } %>
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "postgres") %>
@@ -75,7 +75,7 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 
-production:
+production: &production
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
   username: <%= ENV["BASE_SOURCE_USERNAME"] || "base_source" %>
@@ -84,7 +84,7 @@ production:
 
   # Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process.
 
-staging:
+staging: &staging
   <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
   username: <%= ENV["BASE_SOURCE_USERNAME"] || "base_source" %>
