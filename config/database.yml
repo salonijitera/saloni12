@@ -17,13 +17,14 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For disk space issues, run `df -h` to check available space and `du -h <directory>` to identify large files or directories. Clean up unnecessary files or expand disk size as needed. Ensure regular monitoring and proactive management of disk space to prevent "PG::DiskFull" errors. In case of a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. It is recommended to set up monitoring and alerts for disk space usage to proactively manage the environment.
+  # For disk space issues, run `df -h` to check available space and `du -h <directory>` to identify large files or directories. Clean up unnecessary files or expand disk size as needed. Ensure regular monitoring and proactive management of disk space to prevent "PG::DiskFull" errors. In case of a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. It is recommended to set up monitoring and alerts for disk space usage to proactively manage the environment. Make sure to have a backup strategy in place and regularly test backups to ensure data integrity.
   host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5).to_i %>
   username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
   port: 5432
   timeout: 5000 # Set a timeout value in milliseconds for connecting to the database server. Adjust as needed.
-  # data_directory: <%= ENV["DATABASE_DATA_DIR"] || "/var/lib/postgresql/data" %> # Ensure the database data directory is set to a location with sufficient disk space. This line is commented out as it is not a standard configuration option for database.yml and may cause confusion.
+  # The following line is commented out as it is not a standard configuration option for database.yml and may cause confusion.
+  # data_directory: <%= ENV["DATABASE_DATA_DIR"] || "/var/lib/postgresql/data" %> # Ensure the database data directory is set to a location with sufficient disk space.
 
 development: &development
   <<: *default
