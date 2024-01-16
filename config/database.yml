@@ -23,7 +23,7 @@ default: &default
   username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
   port: 5432
   timeout: 5000 # Set a timeout value in milliseconds for connecting to the database server. Adjust as needed.
-  data_directory: <%= ENV["DATABASE_DATA_DIR"] || "/var/lib/postgresql/data" %> # Ensure the database data directory is set to a location with sufficient disk space.
+  # data_directory: <%= ENV["DATABASE_DATA_DIR"] || "/var/lib/postgresql/data" %> # Ensure the database data directory is set to a location with sufficient disk space. This line is commented out as it is not a standard configuration option for database.yml and may cause confusion.
 
 development: &development
   <<: *default
