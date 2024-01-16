@@ -17,7 +17,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For disk space issues, run `df -h` to check available space and `du -h <directory>` to identify large files or directories. Clean up unnecessary files or expand disk size as needed.
+  # For disk space issues, run `df -h` to check available space and `du -h <directory>` to identify large files or directories. Clean up unnecessary files or expand disk size as needed. Ensure regular monitoring and proactive management of disk space to prevent "PG::DiskFull" errors.
   host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 }.to_i %>
   username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
