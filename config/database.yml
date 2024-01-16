@@ -1,5 +1,5 @@
 # PostgreSQL. Versions 9.3 and up are supported.
-# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors. If you encounter a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. Additionally, consider setting up monitoring and alerts for disk space usage to proactively manage the environment. Ensure that the `/config/database.yml` file has the correct settings for the database server, including the database names, usernames, and passwords for the different environments (development, test, production, staging). The following line is commented out as it is not a standard configuration option for database.yml and may cause confusion.
+# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors. If you encounter a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. Additionally, consider setting up monitoring and alerts for disk space usage to proactively manage the environment. Ensure that the `/config/database.yml` file has the correct settings for the database server, including the database names, usernames, and passwords for the different environments (development, test, production, staging).
 # Install the pg driver:
 #   gem install pg
 # On macOS with Homebrew:
@@ -16,7 +16,7 @@
 #
 default: &default
   adapter: postgresql
-  encoding: unicode
+  encoding: unicode  # Ensure the database encoding is set to 'unicode' to support multilingual data.
   # For disk space issues, run `df -h` to check available space and `du -h <directory>` to identify large files or directories. Clean up unnecessary files or expand disk size as needed. Ensure regular monitoring and proactive management of disk space to prevent "PG::DiskFull" errors. In case of a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. It is recommended to set up monitoring and alerts for disk space usage to proactively manage the environment. Make sure to have a backup strategy in place and regularly test backups to ensure data integrity.
   host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
@@ -24,7 +24,7 @@ default: &default
   port: 5432
   timeout: 5000 # Set a timeout value in milliseconds for connecting to the database server. Adjust as needed.
   # The following line is commented out as it is not a standard configuration option for database.yml and may cause confusion.
-  # data_directory: <%= ENV["DATABASE_DATA_DIR"] || "/var/lib/postgresql/data" %> # Ensure the database data directory is set to a location with sufficient disk space.
+  # data_directory: <%= ENV["DATABASE_DATA_DIR"] || "/var/lib/postgresql/data" %> # Ensure the database data directory is set to a location with sufficient disk space. Uncomment and set this if you need to specify a custom location for the PostgreSQL data directory.
 
 development: &development
   <<: *default
