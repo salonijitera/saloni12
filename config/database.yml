@@ -21,7 +21,7 @@ default: &default
   encoding: unicode
   host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV["BASE_SOURCE_USERNAME"] || "base_source" %>
+  username: <%= ENV["DATABASE_USERNAME"] || "base_source" %>
   port: 5432
   # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
   # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
@@ -29,7 +29,7 @@ default: &default
 development: &development
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_development" } %>
-  password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "postgres") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres") %>
 
   # The specified database role being used to connect to postgres. Verify the role has the correct permissions and ensure that the PostgreSQL data directory has sufficient space to operate.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -56,7 +56,7 @@ development: &development
 test:
   <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_test" } %>
-  password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "postgres") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres") %>
 
 # As with config/credentials.yml, you never want to store sensitive information like your database password in your source code.
 # Instead, provide the password as an environment variable.
@@ -76,8 +76,8 @@ test:
 production:
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
-  username: <%= ENV["BASE_SOURCE_USERNAME"] || "base_source" %>
-  password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "base_source_password") %>
+  username: <%= ENV["DATABASE_USERNAME"] || "base_source" %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %>
   # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider setting up monitoring and alerts for disk space usage. Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process.
 
   # Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process.
@@ -85,7 +85,7 @@ production:
 staging:
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
-  username: <%= ENV["BASE_SOURCE_USERNAME"] || "base_source" %>
-  password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "base_source_password") %>
+  username: <%= ENV["DATABASE_USERNAME"] || "base_source" %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %>
 
 # Ensure there is enough disk space for PostgreSQL to operate and consider setting up monitoring and alerts for disk space usage.
