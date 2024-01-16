@@ -1,5 +1,5 @@
 # PostgreSQL. Versions 9.3 and up are supported.
-# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors. If you encounter a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. Additionally, consider setting up monitoring and alerts for disk space usage to proactively manage the environment. Ensure that the database configuration is correct and the environment variables are properly set. Ensure that the PostgreSQL service has the correct permissions and disk space allocated.
+# It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors. If you encounter a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases. Additionally, consider setting up monitoring and alerts for disk space usage to proactively manage the environment.
 # Install the pg driver:
 #   gem install pg
 # On macOS with Homebrew:
@@ -19,7 +19,7 @@ default: &default
   encoding: unicode
   # Ensure the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed.
   host: <%= ENV["BASE_SOURCE_DATABASE_HOST"] || "localhost" %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 }.to_i %>
   username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
   port: 5432
   # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors. Consider implementing automated monitoring and alerting for disk space usage. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors. If you encounter a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases.
@@ -28,7 +28,7 @@ default: &default
 development: &development
   <<: *default
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_development" } %>
-  password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres") %>
+  password: <%= ENV["DATABASE_PASSWORD"] || "postgres" %>
 
   # The specified database role being used to connect to postgres. Verify the role has the correct permissions and ensure that the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -55,7 +55,7 @@ development: &development
 test:
   <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_test" } %>
-  password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Updated to "base_source_password" to resolve conflict
+  password: <%= ENV["DATABASE_PASSWORD"] || "base_source_password" %> # Updated to "base_source_password" to resolve conflict
 
 # As with config/credentials.yml, you never want to store sensitive information like your database password in your source code.
 # Instead, provide the password as an environment variable.
@@ -66,7 +66,7 @@ test:
 production:
   <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
-  username: <%= ENV["DATABASE_USERNAME"] || "base_source" %> # Kept "base_source" to resolve conflict
+  username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
   password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Kept "base_source_password" to resolve conflict
   # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider setting up monitoring and alerts for disk space usage. Regularly monitor disk space and clean up or archive old data to prevent disk space issues. Consider using tools or scripts to automate this process. Implement proactive measures to manage disk space effectively.
 
@@ -75,6 +75,6 @@ production:
 staging:
   <<: *development
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_staging" } %>
-  username: <%= ENV["DATABASE_USERNAME"] || "base_source" %> # Kept "base_source" to resolve conflict
+  username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
   password: <%= ENV.fetch("DATABASE_PASSWORD", "base_source_password") %> # Kept "base_source_password" to resolve conflict
 # Ensure there is enough disk space for PostgreSQL to operate and consider setting up monitoring and alerts for disk space usage. Implement regular disk space checks and have a plan for managing disk space to avoid "PG::DiskFull" errors.
