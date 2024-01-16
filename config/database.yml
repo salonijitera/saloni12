@@ -1,4 +1,3 @@
-
 # PostgreSQL. Versions 9.3 and up are supported.
 # It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed. Ensure that the database.yml file does not contain hard-coded paths that could lead to incorrect file storage locations. In case of a "PG::DiskFull" error, free up space or increase disk size before attempting to create databases or perform other database operations. Ensure that the database configuration is correct and the environment variables are properly set. Check the PostgreSQL server logs for more detailed information about the disk space issue.
 # Note: The following configuration does not address the disk space issue directly. It is the responsibility of the system administrator to ensure adequate disk space is available.
@@ -32,7 +31,7 @@ development:
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_development" } %>
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "postgres") %>
 
-  # The specified database role being used to connect to postgres. Verify the role has the correct permissions.
+  # The specified database role being used to connect to postgres. Verify the role has the correct permissions and sufficient disk space is available.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database. Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
@@ -41,7 +40,7 @@ development:
   #password:
 
   # Connect on a domain socket that doesn't need configuration. Windows does not have
-  # domain sockets, so uncomment these lines.
+  # domain sockets, so uncomment these lines if you are not on Windows.
   #host: localhost
 
   # The TCP port the server listens on. Defaults to 5432.
@@ -51,7 +50,7 @@ development:
   #schema_search_path: myapp,sharedapp,public
 
   # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1,
+  #   debug5, debug4, debug3, debug2, debug1, log,
   #   log, notice, warning, error, fatal, and panic
   # Defaults to warning.
   #min_messages: notice
@@ -61,8 +60,8 @@ test:
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_test" } %>
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "postgres") %>
 
-# As with config/credentials.yml, you never want to store sensitive information,
-# like your database password, in your source code. Instead, provide the password as an environment variable.
+# As with config/credentials.yml, you never want to store sensitive information like your database password in your source code.
+# Instead, provide the password as an environment variable.
 # Ensure the database configuration is correct and the environment variables are properly set.
 # Instead, provide the password as a unix environment variable when you boot
 # the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
@@ -70,7 +69,7 @@ test:
 # production deployment.
 #
 # On Heroku and other platform providers, you may have a full connection URL
-# available as an environment variable. For example, DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
+# available as an environment variable. For example, DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase". Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
 #
 # You can use this database configuration with:
 # Ensure the database configuration is correct and the environment variables are properly set.
@@ -82,7 +81,7 @@ production: &production
   database: <%= ENV.fetch("DATABASE_NAME") { "base_source_production" } %>
   username: <%= ENV["BASE_SOURCE_USERNAME"] || "base_source" %>
   password: <%= ENV.fetch("BASE_SOURCE_PASSWORD", "base_source_password") %>
-  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors.
+  # Ensure the PostgreSQL data directory has sufficient space to prevent "PG::DiskFull" errors and consider setting up monitoring and alerts for disk space usage.
 
 staging: &staging
   <<: *production
