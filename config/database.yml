@@ -1,3 +1,4 @@
+
 # PostgreSQL. Versions 9.3 and up are supported.
 # It is crucial to ensure that the PostgreSQL data directory has sufficient space to operate. Regularly check disk space with `df -h` and clean up unnecessary files or expand disk size as needed.
 # Install the pg driver:
@@ -22,7 +23,7 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV["DATABASE_USERNAME"] || "postgres" %> # Updated to "postgres" to resolve conflict
   port: 5432
-  # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors. Consider implementing automated monitoring and alerting for disk space usage. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors.
+  # For details on connection pooling, see Rails configuration guide. Ensure the database user has necessary permissions and the PostgreSQL data directory has sufficient space to operate. Regularly monitor disk space and clean up or archive old data to prevent "PG::DiskFull" errors. Consider implementing automated monitoring and alerting for disk space usage. Ensure that the disk space is regularly checked and cleaned to prevent errors like "PG::DiskFull". It's also important to have a contingency plan for disk space exhaustion. Make sure to check the disk space before attempting to create databases to avoid running into "PG::DiskFull" errors. If you encounter a "PG::DiskFull" error, resolve the disk space issue before attempting to create or migrate databases.
   timeout: 5000 # Set a timeout value in milliseconds for connecting to the database server. Adjust as needed.
 
 development: &development
